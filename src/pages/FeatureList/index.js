@@ -6,6 +6,13 @@ export default class FeatureList extends React.Component {
   render() {
     const { user } = this.props
     console.log('user', user)
+    if (user) {
+      return (
+        <a href="/.netlify/functions/auth">
+          Netlify auth link
+        </a>
+      )
+    }
     const features = [
       {
         title: 'Add cool stuff',
