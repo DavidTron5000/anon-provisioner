@@ -1,5 +1,5 @@
 // import NetlifyAPI from 'netlify'
-import api from './utils/api'
+import { createNetlifyDeployKey, createNetlifySite } from './utils/api'
 // import faker from 'faker'
 
 /* Function to handle netlify auth callback */
@@ -9,7 +9,7 @@ exports.handler = async (event, context, callback) => {
   
   try {
     /* 1. Create netlify deploy key `createNetlifyDeployKey` */
-    const netlifyDeployKey = await api.createDeployKey({}, token)
+    const netlifyDeployKey = await createNetlifyDeployKey({}, token)
 
     // Payload for Netlify create site
     const siteConfig = {
@@ -32,7 +32,7 @@ exports.handler = async (event, context, callback) => {
     //   siteConfig.name = name
     // }
 
-    const netlifySite = await api.createNetlifySite(siteConfig, token)
+    const netlifySite = await createNetlifySite(siteConfig, token)
 
     console.log('netlifySite', netlifySite)
     /* Take the grant code and exchange for an accessToken */
