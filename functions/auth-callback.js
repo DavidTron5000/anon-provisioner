@@ -21,8 +21,9 @@ exports.handler = (event, context, callback) => {
       return token
     })
     .then((token) => {
-      console.log('token', token.access_token)
-      const client = new NetlifyAPI(token.access_token)
+      console.log(typeof token)
+      console.log('token', token.token.access_token)
+      const client = new NetlifyAPI(token.token.access_token)
       return client.listSites()
     })
     // Do stuff with user data & token
