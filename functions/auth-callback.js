@@ -2,9 +2,9 @@
 import oauth2, { config } from './utils/oauth'
 import fetch from 'node-fetch'
 
-async function getSites(netlifyApiToken) {
-  console.log('getSites')
-  const url = `https://api.netlify.com/api/v1/sites/`
+async function getUser(netlifyApiToken) {
+  console.log('getUser')
+  const url = `https://api.netlify.com/api/v1/user/`
   const response = await fetch(url, {
     method: 'GET',
     headers: {
@@ -36,26 +36,27 @@ exports.handler = (event, context, callback) => {
     client_secret: config.clientSecret
   })
     .then((result) => {
-      const token = oauth2.accessToken.create(result)
-      console.log('accessToken', token)
-      return token
+      const auth = oauth2.accessToken.create(result)
+      console.log('auth', auth)
+      return auth
     })
-    .then((token) => {
+    .then((auth) => {
+      const { token } = auth
       console.log(typeof token)
-      console.log('token', token.token.access_token)
-      return getSites(token.token.access_token)
+      console.log('token', token.access_token)
+      return getUser(token.access_token)
     })
     // Do stuff with user data & token
-    .then((sites) => {
+    .then((user) => {
       // console.log('auth token', result.token)
       // // Do stuff with user data
       // console.log('user data', result.data)
       // Do other custom stuff
-      console.log('sites', sites)
+      console.log('user', user)
       // return results to browser
       return callback(null, {
         statusCode: 200,
-        body: JSON.stringify(sites)
+        body: JSON.stringify(user)
       })
     })
     .catch((error) => {
