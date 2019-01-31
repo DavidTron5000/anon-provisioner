@@ -1,4 +1,5 @@
 import getUserData from './utils/getUserData'
+import NetlifyAPI from 'netlify'
 import oauth2, { config } from './utils/oauth'
 
 /* Function to handle netlify auth callback */
@@ -19,19 +20,21 @@ exports.handler = (event, context, callback) => {
       console.log('accessToken', token)
       return token
     })
-    // Get more info about intercom user
-    .then(getUserData)
+    .then((token) => {
+      const client = new NetlifyAPI(token)
+      return client.listSites()
+    })
     // Do stuff with user data & token
-    .then((result) => {
-      console.log('auth token', result.token)
-      // Do stuff with user data
-      console.log('user data', result.data)
+    .then((sites) => {
+      // console.log('auth token', result.token)
+      // // Do stuff with user data
+      // console.log('user data', result.data)
       // Do other custom stuff
-      console.log('state', state)
+      console.log('sites', sites)
       // return results to browser
       return callback(null, {
         statusCode: 200,
-        body: JSON.stringify(result)
+        body: JSON.stringify(sites)
       })
     })
     .catch((error) => {
