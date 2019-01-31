@@ -5,6 +5,7 @@
   "dependencies": {
     "netlify": "^2.2.4",
     "netlify-identity-widget": "^1.5.2",
+    "node-fetch": "^2.3.0",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-router-dom": "^4.3.1",

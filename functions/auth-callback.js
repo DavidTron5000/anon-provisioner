@@ -1,9 +1,29 @@
+// import NetlifyAPI from 'netlify'
 import oauth2, { config } from './utils/oauth'
-const NetlifyAPI = require('netlify')
+import fetch from 'node-fetch'
+
+async function getSites(netlifyApiToken) {
+  console.log('getSites')
+  const url = `https://api.netlify.com/api/v1/sites/`
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${netlifyApiToken}`
+    }
+  })
+
+  const data = await response.json()
+
+  if (response.status === 422) {
+    throw new Error(`Error ${JSON.stringify(data)}`)
+  }
+
+  return data
+}
 
 /* Function to handle netlify auth callback */
 exports.handler = (event, context, callback) => {
-  console.log('NetlifyAPI', NetlifyAPI)
   const code = event.queryStringParameters.code
   /* state helps mitigate CSRF attacks & Restore the previous state of your app */
   const state = event.queryStringParameters.state
@@ -23,8 +43,7 @@ exports.handler = (event, context, callback) => {
     .then((token) => {
       console.log(typeof token)
       console.log('token', token.token.access_token)
-      const client = new NetlifyAPI(token.token.access_token)
-      return client.listSites()
+      return getSites(token.token.access_token)
     })
     // Do stuff with user data & token
     .then((sites) => {
