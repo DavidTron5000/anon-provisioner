@@ -1,5 +1,6 @@
 // import NetlifyAPI from 'netlify'
 import { createNetlifyDeployKey, createNetlifySite } from './utils/api'
+import { createDeployKey } from './utils/github'
 // import faker from 'faker'
 
 /* Function to handle netlify auth callback */
@@ -11,6 +12,13 @@ exports.handler = async (event, context, callback) => {
     /* 1. Create netlify deploy key `createNetlifyDeployKey` */
     const netlifyDeployKey = await createNetlifyDeployKey({}, token)
 
+    const repoName = 'DavidWells/dummy-site'
+    /* 2. Then add key to github repo https://api.github.com/repos/owner/repoName/keys */
+    const githubDeployKey = await createDeployKey({
+      repo: repoName,
+      key: netlifyDeployKey.public_key,
+      token: process.env.GITHUB
+    })
     // Payload for Netlify create site
     const siteConfig = {
       // created_via: 'aws_cloudformation',
@@ -19,7 +27,7 @@ exports.handler = async (event, context, callback) => {
         deploy_key_id: netlifyDeployKey.id,
         public_repo: true,
         repo_branch: 'master',
-        repo_path: 'DavidWells/dummy-site',
+        repo_path: repoName,
         repo_type: 'git',
         repo_url: 'https://github.com/DavidWells/dummy-site',
         provider: 'github',
@@ -33,6 +41,7 @@ exports.handler = async (event, context, callback) => {
     // }
 
     const netlifySite = await createNetlifySite(siteConfig, token)
+
 
     console.log('netlifySite', netlifySite)
     /* Take the grant code and exchange for an accessToken */
