@@ -19,10 +19,12 @@ exports.handler = async (event, context, callback) => {
       key: netlifyDeployKey.public_key,
       token: process.env.GITHUB
     })
+
+    const sessionId = uuidv4()
     // Payload for Netlify create site
     const siteConfig = {
       // created_via: 'aws_cloudformation',
-      session_id: uuidv4(),
+      session_id: sessionId,
       repo: {
         deploy_key_id: netlifyDeployKey.id,
         public_repo: true,
@@ -47,7 +49,10 @@ exports.handler = async (event, context, callback) => {
     /* Take the grant code and exchange for an accessToken */
     return {
       statusCode: 200,
-      body: JSON.stringify(netlifySite)
+      body: JSON.stringify({
+        sessionId: sessionId,
+        site: netlifySite
+      })
     }
   } catch (error) {
     return {
