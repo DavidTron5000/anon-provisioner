@@ -3,6 +3,7 @@ import oauth2, { config } from './utils/oauth'
 
 /* Function to handle netlify auth callback */
 exports.handler = (event, context, callback) => {
+  console.log('NetlifyAPI', NetlifyAPI)
   const code = event.queryStringParameters.code
   /* state helps mitigate CSRF attacks & Restore the previous state of your app */
   const state = event.queryStringParameters.state
@@ -20,6 +21,7 @@ exports.handler = (event, context, callback) => {
       return token
     })
     .then((token) => {
+      console.log('token', token.access_token)
       const client = new NetlifyAPI(token.access_token)
       return client.listSites()
     })
