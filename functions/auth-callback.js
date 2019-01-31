@@ -1,5 +1,5 @@
-import NetlifyAPI from 'netlify'
 import oauth2, { config } from './utils/oauth'
+const NetlifyAPI = require('netlify')
 
 /* Function to handle netlify auth callback */
 exports.handler = (event, context, callback) => {
