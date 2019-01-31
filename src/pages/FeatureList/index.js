@@ -8,7 +8,7 @@ export default class FeatureList extends React.Component {
     console.log('user', user)
     if (user) {
       return (
-        <a href="/.netlify/functions/auth">
+        <a href="/.netlify/functions/auth-start">
           Netlify auth link
         </a>
       )

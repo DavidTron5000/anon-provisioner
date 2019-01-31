@@ -3,7 +3,7 @@ import oauth2, { config } from './utils/oauth'
 import fetch from 'node-fetch'
 
 async function getUser(netlifyApiToken) {
-  console.log('getUser')
+
   const url = `https://api.netlify.com/api/v1/user/`
   const response = await fetch(url, {
     method: 'GET',
@@ -44,7 +44,8 @@ exports.handler = (event, context, callback) => {
       const { token } = auth
       console.log(typeof token)
       console.log('token', token.access_token)
-      return getUser(token.access_token)
+      return token.access_token
+      // return getUser(token.access_token)
     })
     // Do stuff with user data & token
     .then((user) => {
@@ -56,7 +57,9 @@ exports.handler = (event, context, callback) => {
       // return results to browser
       return callback(null, {
         statusCode: 200,
-        body: JSON.stringify(user)
+        body: JSON.stringify({
+          token: user
+        })
       })
     })
     .catch((error) => {
