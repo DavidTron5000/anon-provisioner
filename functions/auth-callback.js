@@ -1,4 +1,3 @@
-import getUserData from './utils/getUserData'
 import NetlifyAPI from 'netlify'
 import oauth2, { config } from './utils/oauth'
 
@@ -21,7 +20,7 @@ exports.handler = (event, context, callback) => {
       return token
     })
     .then((token) => {
-      const client = new NetlifyAPI(token)
+      const client = new NetlifyAPI(token.access_token)
       return client.listSites()
     })
     // Do stuff with user data & token
