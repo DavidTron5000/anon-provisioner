@@ -1,7 +1,6 @@
 // import NetlifyAPI from 'netlify'
 import { createNetlifyDeployKey, createNetlifySite } from './utils/api'
 import { createDeployKey } from './utils/github'
-// import faker from 'faker'
 
 /* Function to handle netlify auth callback */
 exports.handler = async (event, context, callback) => {
