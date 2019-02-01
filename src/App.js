@@ -6,7 +6,8 @@ import AppLayout from './fragments/AppLayout'
 import Welcome from './pages/Welcome'
 import NotFound from './pages/NotFound'
 import Profile from './pages/Profile'
-import FeatureList from './pages/FeatureList'
+import Main from './pages/Main'
+import Demo from './pages/Demo'
 import FeatureAdd from './pages/FeatureAdd'
 import logo from './logo.svg'
 import './App.css'
@@ -58,16 +59,6 @@ class App extends Component {
     return (
       <div className="App">
         <Route path="/" render={navBar} />
-        <header className="app-header">
-          <img src={logo} className="app-logo" alt="logo" />
-          <div>
-            <h1 className="app-title">Use your voice!!</h1>
-            <p>Dreaming of a new feature? Help us build awesome stuff.
-              <br/><br/>
-              Upvote or submit feature requests!
-            </p>
-          </div>
-        </header>
         <Route {...props} render={(p) => {
           // loading state
           // if (props.loading || props.location.pathname === '/callback') {
@@ -78,16 +69,18 @@ class App extends Component {
           if (!user) {
             return (
               <Switch>
-                <Route path={`/`} exact render={() => <FeatureList {...props} />} />
+                <Route path={`/`} exact render={() => <Main {...props} />} />
+                <Route path={`/demo`} exact render={() => <Demo {...props} />} />
                 <Route render={() => <PleaseLogin logIn={this.logIn} {...props} />} />
               </Switch>
+              
             )
           }
 
           // Protected routes
           return (
             <Switch>
-              <Route path={`/`} exact render={() => <FeatureList {...props} user={user} />} />
+              <Route path={`/`} exact render={() => <Main {...props} user={user} />} />
               <Route path={`/add`} exact component={FeatureAdd} />
               {/* <Route path={`/features/:id/edit`} component={FeatureEdit} />
                <Route path={`/features/:id`} component={FeatureView} /> */}

@@ -5,6 +5,7 @@
   "dependencies": {
     "faunadb": "^2.6.0",
     "jsonwebtoken": "^8.4.0",
+    "lodash.debounce": "^4.0.8",
     "netlify": "^2.2.5",
     "netlify-identity-widget": "^1.5.2",
     "node-fetch": "^2.3.0",
@@ -17,7 +18,7 @@
   "scripts": {
     "fauna-bootstrap": "node ./scripts/fauna-bootstrap.js",
     "fauna-validate": "node ./scripts/fauna-validate.js",
-    "start": "npm-run-all --parallel fauna-validate start:app start:server",
+    "start": "npm-run-all --parallel start:app start:server",
     "start:app": "react-scripts start",
     "start:server": "netlify-lambda serve functions",
     "xprebuild": "echo 'setup faunaDB' && npm run fauna-bootstrap",

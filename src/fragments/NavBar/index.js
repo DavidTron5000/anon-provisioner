@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { callProtectedEndpoint } from '../../utils/api'
+import AuthButton from '../../components/AuthButton'
 
 class NavBar extends Component {
   render() {
     const { auth, user } = this.props
-    console.log('auth', auth)
+    console.log('this.props', this.props)
     let leftNavContents = (
       <div>
         <Link to={`/profile/`}>
@@ -16,15 +17,10 @@ class NavBar extends Component {
 
     let rightNavContents = (
       <span className='right-nav-contents'>
-        <a href="https://github.com/netlify/awesomesauce">
-          View on Github
-        </a>
-        <button style={{marginLeft: 20, background: 'pink'}} onClick={() => callProtectedEndpoint('explode-application')}>
-          EXPLODE APPLICATION
-        </button>
-        <button style={{marginLeft: 20}} onClick={() => auth.open()}>
-          Log In
-        </button>
+        <Link to={`/demo/`}>
+          Demo
+        </Link>
+        <AuthButton auth={auth} user={user} />
       </span>
     )
 
@@ -50,9 +46,7 @@ class NavBar extends Component {
           <button style={{marginLeft: 20, background: 'pink'}} onClick={() => callProtectedEndpoint('explode-application')}>
             EXPLODE APPLICATION
           </button>
-          <button style={{marginLeft: 20}} onClick={() => auth.logout()}>
-            Log Out
-          </button>
+          <AuthButton auth={auth} user={user} />
         </span>
       )
     }
@@ -60,8 +54,8 @@ class NavBar extends Component {
     const leftNav = (
       <div className='navbar-left'>
         <Link className='navbar-logo' title='logo' to='/'>
-          <img alt='home' src="https://www.netlify.com/img/press/logos/full-logo-light.svg" />
-          Feature Requests
+          {/* <img alt='home' src="https://www.netlify.com/img/press/logos/full-logo-light.svg" /> */}
+          Impossible Landing pages
         </Link>
       </div>
     )
