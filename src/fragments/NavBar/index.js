@@ -40,12 +40,6 @@ class NavBar extends Component {
           <Link to={`/profile/`}>
             Profile
           </Link>
-          <Link style={{marginLeft: 20}} to={`/add/`} className={'button-primary'}>
-            Request a Feature
-          </Link>
-          <button style={{marginLeft: 20, background: 'pink'}} onClick={() => callProtectedEndpoint('explode-application')}>
-            EXPLODE APPLICATION
-          </button>
           <AuthButton auth={auth} user={user} />
         </span>
       )
