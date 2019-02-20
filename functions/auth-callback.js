@@ -24,8 +24,6 @@ async function getUser(netlifyApiToken) {
 
 /* Function to handle netlify auth callback */
 exports.handler = (event, context, callback) => {
-  console.log('event', event)
-  console.log('context', context)
   const code = event.queryStringParameters.code
   /* state helps mitigate CSRF attacks & Restore the previous state of your app */
   const state = event.queryStringParameters.state
@@ -56,15 +54,6 @@ exports.handler = (event, context, callback) => {
       // console.log('user data', result.data)
       // Do other custom stuff
       console.log('user', user)
-      const url = '/#user'
-      const response = {
-        statusCode: 302,
-        headers: {
-          Location: authorizationURI,
-          'Cache-Control': 'no-cache' // Disable caching of this response
-        },
-        body: '' // return body for local dev
-      }
       // return results to browser
       return callback(null, {
         statusCode: 200,
