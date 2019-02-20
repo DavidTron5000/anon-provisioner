@@ -8,10 +8,13 @@ const USER_PROFILE_URL = 'https://api.netlify.com/api/v1/user'
 const AUTHORIZATION_URL = 'https://app.netlify.com/authorize'
 const TOKEN_URL = 'https://api.netlify.com/oauth/token'
 
+const clientIdVar = 'NETLIFY_OAUTH_CLIENT_ID'
+const clientSecretVar = 'NETLIFY_OAUTH_CLIENT_SECRET'
+
 export const config = {
   /* values set in terminal session or in netlify environment variables */
-  clientId: process.env.NETLIFY_OAUTH_CLIENT_ID,
-  clientSecret: process.env.NETLIFY_OAUTH_CLIENT_SECRET,
+  clientId: process.env[clientIdVar],
+  clientSecret: process.env[clientSecretVar],
   /* Intercom oauth API endpoints */
   tokenHost: TOKEN_HOST,
   authorizePath: AUTHORIZATION_URL, //`${intercomApi}/oauth`,
@@ -23,10 +26,10 @@ export const config = {
 
 function authInstance(credentials) {
   if (!credentials.client.id) {
-    throw new Error('MISSING REQUIRED ENV VARS. Please set INTERCOM_CLIENT_ID')
+    throw new Error(`MISSING REQUIRED ENV VARS. Please set ${clientIdVar}`)
   }
   if (!credentials.client.secret) {
-    throw new Error('MISSING REQUIRED ENV VARS. Please set INTERCOM_CLIENT_SECRET')
+    throw new Error(`MISSING REQUIRED ENV VARS. Please set ${clientSecretVar}`)
   }
   // return oauth instance
   return simpleOauth.create(credentials)
