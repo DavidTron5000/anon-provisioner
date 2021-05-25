@@ -11,7 +11,7 @@ exports.handler = async (event, context, callback) => {
     /* 1. Create netlify deploy key `createNetlifyDeployKey` */
     const netlifyDeployKey = await createNetlifyDeployKey({}, token)
 
-    const repoName = 'DavidWells/dummy-site'
+    const repoName = 'DavidTron5000/my-site'
     /* 2. Then add key to github repo https://api.github.com/repos/owner/repoName/keys */
     const githubDeployKey = await createDeployKey({
       repo: repoName,
@@ -30,7 +30,7 @@ exports.handler = async (event, context, callback) => {
         repo_branch: 'master',
         repo_path: repoName,
         repo_type: 'git',
-        repo_url: 'https://github.com/DavidWells/dummy-site',
+        repo_url: 'https://github.com/DavidTron5000/my-site',
         provider: 'github',
         allowed_branches: ['master'],
       }
