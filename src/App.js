@@ -7,7 +7,6 @@ import Welcome from './pages/Welcome'
 import NotFound from './pages/NotFound'
 import Profile from './pages/Profile'
 import Main from './pages/Main'
-import Demo from './pages/Demo'
 import FeatureAdd from './pages/FeatureAdd'
 import './App.css'
 
@@ -69,7 +68,6 @@ class App extends Component {
             return (
               <Switch>
                 <Route path={`/`} exact render={() => <Main {...props} />} />
-                <Route path={`/demo`} exact render={() => <Demo {...props} />} />
                 <Route render={() => <PleaseLogin logIn={this.logIn} {...props} />} />
               </Switch>
               

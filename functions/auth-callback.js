@@ -3,7 +3,6 @@ const fetch = require('node-fetch')
 const { oauth2, config } = require('./utils/oauth')
 
 async function getUser(netlifyApiToken) {
-
   const url = `https://api.netlify.com/api/v1/user/`
   const response = await fetch(url, {
     method: 'GET',

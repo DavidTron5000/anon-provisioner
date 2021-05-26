@@ -1,11 +1,13 @@
 const { createDeployKey } = require('./utils/github')
 const { createNetlifyDeployKey } = require('./utils/netlify')
+const { GITHUB_API_TOKEN } = process.env
 
 /* Connect a repo to netlify with a deploy key */
 exports.handler = async (event, context, callback) => {
-  const data = JSON.parse(event.body)
-  const token = data.token
-  const repoName = data.repoName
+  const body = JSON.parse(event.body)
+  const token = body.token
+  const repoName = body.repoName
+  const githubToken = body.githubToken || GITHUB_API_TOKEN
   
   try {
     /* 1. Create netlify deploy key `createNetlifyDeployKey` */
@@ -16,7 +18,7 @@ exports.handler = async (event, context, callback) => {
     const githubDeployKey = await createDeployKey({
       repo: repoName,
       key: netlifyDeployKey.public_key,
-      token: process.env.GITHUB
+      token: githubToken
     })
     console.log('githubDeployKey', githubDeployKey)
 

@@ -7,12 +7,13 @@ const {
   addNetlifySnippet
 } = require('./utils/netlify')
 const { createDeployKey } = require('./utils/github')
+const { NETLIFY_DEPLOY_KEY_ID, NETLIFY_API_TOKEN } = process.env
 
 /* Function to handle netlify auth callback */
 exports.handler = async (event, context, callback) => {
   const body = JSON.parse(event.body)
-  const token = body.token
-  const netlifyDeployKey = body.netlifyDeployKey || process.env.NETLIFY_DEPLOY_KEY_ID
+  const token = body.token || NETLIFY_API_TOKEN
+  const netlifyDeployKey = body.netlifyDeployKey || NETLIFY_DEPLOY_KEY_ID
   const sessionId = body.sessionId || uuidv4()
   const repoName = body.repoName || 'DavidTron5000/explorer-demo'
   const apiUrl = body.apiUrl

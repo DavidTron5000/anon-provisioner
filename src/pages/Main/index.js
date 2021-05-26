@@ -6,7 +6,7 @@ export default class Main extends React.Component {
     const { user } = this.props
     let contents = (
       <div>
-        Login
+        You will need to login to use this app
       </div>
     )
     if (user) {

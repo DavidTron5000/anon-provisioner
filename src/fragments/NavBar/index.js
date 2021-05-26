@@ -17,9 +17,6 @@ class NavBar extends Component {
 
     let rightNavContents = (
       <span className='right-nav-contents'>
-        <Link to={`/demo/`}>
-          Demo
-        </Link>
         <AuthButton auth={auth} user={user} />
       </span>
     )
@@ -49,7 +46,7 @@ class NavBar extends Component {
       <div className='navbar-left'>
         <Link className='navbar-logo' title='logo' to='/'>
           {/* <img alt='home' src="https://www.netlify.com/img/press/logos/full-logo-light.svg" /> */}
-          Impossible Landing pages
+          The Coolest App
         </Link>
       </div>
     )

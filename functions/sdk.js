@@ -1,9 +1,10 @@
 const NetlifyAPI = require('netlify')
+const { NETLIFY_API_TOKEN } = process.env
 
 /* Function to handle netlify auth callback */
 exports.handler = async (event, context, callback) => {
   const body = JSON.parse(event.body)
-  const token = body.token
+  const token = body.token || NETLIFY_API_TOKEN
   
   try {
     /* 1. Create netlify deploy key `createNetlifyDeployKey` */
