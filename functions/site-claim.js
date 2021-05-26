@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken'
+const jwt = require('jsonwebtoken')
 
 /* Function to handle netlify auth callback */
 exports.handler = async (event, context, callback) => {

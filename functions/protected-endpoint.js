@@ -15,15 +15,13 @@ exports.handler = function(event, context, callback) {
     })
   }
   console.log('User is allowed. Let them in')
-
   /*
     Do fancy stuff here
   */
-
   return callback(null, {
     statusCode: 200,
     body: JSON.stringify({
-      data: 'SECRET STUFFFFFFFFFFFFFF OOOOOOOooooooooooo'
+      data: 'SECRET STUFFFFFFFFFFFFFF'
     })
   })
 }

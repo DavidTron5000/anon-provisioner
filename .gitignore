@@ -11,6 +11,8 @@
 # production
 /build
 /functions-build
+*.resp.json
+
 
 # Netlify
 .netlify

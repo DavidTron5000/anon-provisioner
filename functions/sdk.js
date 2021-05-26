@@ -1,14 +1,13 @@
-import NetlifyAPI from 'netlify'
+const NetlifyAPI = require('netlify')
 
 /* Function to handle netlify auth callback */
 exports.handler = async (event, context, callback) => {
-  const data = JSON.parse(event.body)
-  const token = data.token
+  const body = JSON.parse(event.body)
+  const token = body.token
   
   try {
     /* 1. Create netlify deploy key `createNetlifyDeployKey` */
     const client = new NetlifyAPI(token)
-
     const sites = await client.listSites()
 
     /* Take the grant code and exchange for an accessToken */

@@ -1,6 +1,6 @@
 // import NetlifyAPI from 'netlify'
-import oauth2, { config } from './utils/oauth'
-import fetch from 'node-fetch'
+const fetch = require('node-fetch')
+const { oauth2, config } = require('./utils/oauth')
 
 async function getUser(netlifyApiToken) {
 

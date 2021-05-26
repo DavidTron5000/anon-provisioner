@@ -1,5 +1,4 @@
-import simpleOauth from 'simple-oauth2'
-
+const simpleOauth = require('simple-oauth2')
 /* process.env.URL from netlify BUILD environment variables */
 const siteUrl = process.env.URL || 'http://localhost:3000'
 
@@ -11,7 +10,7 @@ const TOKEN_URL = 'https://api.netlify.com/oauth/token'
 const clientIdVar = 'NETLIFY_OAUTH_CLIENT_ID'
 const clientSecretVar = 'NETLIFY_OAUTH_CLIENT_SECRET'
 
-export const config = {
+const config = {
   /* values set in terminal session or in netlify environment variables */
   clientId: process.env[clientIdVar],
   clientSecret: process.env[clientSecretVar],
@@ -36,7 +35,7 @@ function authInstance(credentials) {
 }
 
 /* Create oauth2 instance to use in our two functions */
-export default authInstance({
+const instance = authInstance({
   client: {
     id: config.clientId,
     secret: config.clientSecret
@@ -47,3 +46,8 @@ export default authInstance({
     authorizePath: config.authorizePath
   }
 })
+
+module.exports = {
+  oauth2: instance,
+  config,
+}

@@ -1,36 +1,49 @@
 // import NetlifyAPI from 'netlify'
-import { createNetlifyDeployKey, createNetlifySite } from './utils/api'
-import { createDeployKey } from './utils/github'
+const { 
+  createNetlifySite, 
+  createNetlifyDeployKey, 
+  createNetlifyBuildHook,
+  enableNetlifyIdentity,
+  addNetlifySnippet
+} = require('./utils/netlify')
+const { createDeployKey } = require('./utils/github')
 
 /* Function to handle netlify auth callback */
 exports.handler = async (event, context, callback) => {
-  const data = JSON.parse(event.body)
-  const token = data.token
-  
+  const body = JSON.parse(event.body)
+  const token = body.token
+  const netlifyDeployKey = body.netlifyDeployKey || process.env.NETLIFY_DEPLOY_KEY_ID
+  const sessionId = body.sessionId || uuidv4()
+  const repoName = body.repoName || 'DavidTron5000/explorer-demo'
+  const apiUrl = body.apiUrl
+  const apiKey = body.apiKey
+
   try {
+
     /* 1. Create netlify deploy key `createNetlifyDeployKey` */
-    const netlifyDeployKey = await createNetlifyDeployKey({}, token)
-
-    const repoName = 'DavidTron5000/my-site'
+    // const netlifyDeployKey = await createNetlifyDeployKey({}, token)
+    // console.log('netlifyDeployKey', netlifyDeployKey)
+  
     /* 2. Then add key to github repo https://api.github.com/repos/owner/repoName/keys */
-    const githubDeployKey = await createDeployKey({
-      repo: repoName,
-      key: netlifyDeployKey.public_key,
-      token: process.env.GITHUB
-    })
-
-    const sessionId = uuidv4()
+    // const githubDeployKey = await createDeployKey({
+    //   repo: repoName,
+    //   key: netlifyDeployKey.public_key,
+    //   token: process.env.GITHUB
+    // })
+   
+    console.log('deployKey', netlifyDeployKey)
     // Payload for Netlify create site
     const siteConfig = {
       // created_via: 'aws_cloudformation',
       session_id: sessionId,
       repo: {
-        deploy_key_id: netlifyDeployKey.id,
+        // deploy_key_id: netlifyDeployKey.id,
+        deploy_key_id: netlifyDeployKey,
         public_repo: true,
         repo_branch: 'master',
         repo_path: repoName,
         repo_type: 'git',
-        repo_url: 'https://github.com/DavidTron5000/my-site',
+        repo_url: `https://github.com/${repoName}`,
         provider: 'github',
         allowed_branches: ['master'],
       }
@@ -42,15 +55,38 @@ exports.handler = async (event, context, callback) => {
     // }
 
     const netlifySite = await createNetlifySite(siteConfig, token)
-
-
+    const siteId = netlifySite.site_id
     console.log('netlifySite', netlifySite)
-    /* Take the grant code and exchange for an accessToken */
+
+    /* Create a build hook */
+    const netlifyBuildHook = await createNetlifyBuildHook(siteId , {
+      title: "Anon site updater hook",
+      branch: "master"
+    }, token)
+     console.log('netlifyBuildHook', netlifyBuildHook)
+
+    /* Enable Netlify identity for site */
+    const identityInfo = await enableNetlifyIdentity(siteId, token)
+
+    /* Inject variables to site */
+
+    const snippetInfo = await addNetlifySnippet(siteId, {
+      title: 'config-values',
+      html: `<script>
+var apiUrl = '${apiUrl}';
+var apiKey = '${apiKey}';
+</script>`
+    }, token)
+    
     return {
       statusCode: 200,
       body: JSON.stringify({
         sessionId: sessionId,
-        site: netlifySite
+        site: netlifySite,
+        hook: netlifyBuildHook,
+        identity: identityInfo,
+        snippet: snippetInfo,
+        curl: `curl -X POST -d {} https://api.netlify.com/build_hooks/${netlifyBuildHook.id}`
       })
     }
   } catch (error) {

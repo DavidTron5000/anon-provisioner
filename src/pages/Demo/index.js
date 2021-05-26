@@ -1,6 +1,5 @@
 import React from 'react'
 import AppLayout from '../../fragments/AppLayout'
-import debounce from 'lodash.debounce'
 import './Demo.css'
 /*global $*/
 export default class Main extends React.Component {

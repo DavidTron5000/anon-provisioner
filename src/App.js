@@ -9,7 +9,6 @@ import Profile from './pages/Profile'
 import Main from './pages/Main'
 import Demo from './pages/Demo'
 import FeatureAdd from './pages/FeatureAdd'
-import logo from './logo.svg'
 import './App.css'
 
 class App extends Component {

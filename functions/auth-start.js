@@ -1,4 +1,4 @@
-import oauth2, { config } from './utils/oauth'
+const { oauth2, config } = require('./utils/oauth')
 
 /* Do initial auth redirect */
 exports.handler = (event, context, callback) => {

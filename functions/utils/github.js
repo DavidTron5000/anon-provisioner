@@ -1,6 +1,6 @@
-import fetch from 'node-fetch'
+const fetch = require('node-fetch')
 
-export async function getRepoData(config) {
+async function getRepoData(config) {
   console.log('Get github repo live info')
   const url = `https://api.github.com/repos/${config.repo}`
 
@@ -19,7 +19,7 @@ export async function getRepoData(config) {
   return await response.json() // eslint-disable-line
 }
 
-export async function createDeployKey(config) {
+async function createDeployKey(config) {
   console.log('Adding Netlify deploy key to Github repo')
   const url = `https://api.github.com/repos/${config.repo}/keys`
   const response = await fetch(url, {
@@ -37,7 +37,7 @@ export async function createDeployKey(config) {
   return await response.json() // eslint-disable-line
 }
 
-export async function deleteDeployKey(config) {
+async function deleteDeployKey(config) {
   console.log('Removing Netlify deploy key to github repo', config.id)
   const url = `https://api.github.com/repos/${config.repo}/keys/${config.id}`
   const response = await fetch(url, {
@@ -59,7 +59,7 @@ export async function deleteDeployKey(config) {
   return response
 }
 
-export async function createWebhook(config) {
+async function createWebhook(config) {
   console.log('Creating Github webhook')
   const url = `https://api.github.com/repos/${config.repo}/hooks`
   const response = await fetch(url, {
@@ -81,7 +81,7 @@ export async function createWebhook(config) {
   return await response.json() // eslint-disable-line
 }
 
-export async function deleteWebhook(config) {
+async function deleteWebhook(config) {
   console.log('Deleting Github webhook', config.hookId)
   const url = `https://api.github.com/repos/${config.repo}/hooks/${config.hookId}`
   const response = await fetch(url, {
@@ -92,4 +92,12 @@ export async function deleteWebhook(config) {
     }
   })
   return response
+}
+
+module.exports = {
+  getRepoData,
+  createDeployKey,
+  deleteDeployKey,
+  createWebhook,
+  deleteWebhook
 }
