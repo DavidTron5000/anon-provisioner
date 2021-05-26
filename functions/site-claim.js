@@ -1,18 +1,10 @@
-const jwt = require('jsonwebtoken')
-const { NETLIFY_OAUTH_CLIENT_ID, NETLIFY_OAUTH_CLIENT_SECRET } = process.env
+const getClaimUrl = require('./utils/get-claim-url')
 
 /* Function to handle netlify auth callback */
-exports.handler = async (event, context, callback) => {
+exports.handler = async (event) => {
   const body = JSON.parse(event.body)
   const sessionId = body.session
-  const token = jwt.sign({
-    client_id: NETLIFY_OAUTH_CLIENT_ID, 
-    session_id: sessionId,
-  }, NETLIFY_OAUTH_CLIENT_SECRET)
-
-  const claimUrl = `https://app.netlify.com/claim#${token}`
-  console.log("Link to claim your sites:")
-  console.log(claimUrl)
+  const claimUrl = getClaimUrl(sessionId)
 
   return {
     statusCode: 200,

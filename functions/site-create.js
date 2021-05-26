@@ -7,10 +7,12 @@ const {
   addNetlifySnippet
 } = require('./utils/netlify')
 const { createDeployKey } = require('./utils/github')
+const getClaimUrl = require('./utils/get-claim-url')
+
 const { NETLIFY_DEPLOY_KEY_ID, NETLIFY_API_TOKEN } = process.env
 
 /* Function to handle netlify auth callback */
-exports.handler = async (event, context, callback) => {
+exports.handler = async (event, context) => {
   const body = JSON.parse(event.body)
   const token = body.token || NETLIFY_API_TOKEN
   const netlifyDeployKey = body.netlifyDeployKey || NETLIFY_DEPLOY_KEY_ID
@@ -83,6 +85,7 @@ var apiKey = '${apiKey}';
       statusCode: 200,
       body: JSON.stringify({
         sessionId: sessionId,
+        claimUrl: getClaimUrl(sessionId),
         site: netlifySite,
         hook: netlifyBuildHook,
         identity: identityInfo,
